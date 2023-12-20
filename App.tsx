@@ -1,20 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { StatusBar } from 'react-native';
+import SignUp from './Components/Authentication/SignUp';
+import HomePage from './Components/Homepage';
+import UsernameForm from './Components/Authentication/UsernameForm';
+import ChatWindow from './Components/ChatWindow';
+
+export type RootStackParamList = {
+  SignUp: undefined;
+  UsernameForm: undefined;
+  HomePage: undefined;
+  ChatWindow: { chatId: string };
+};
+
+const Stack = createStackNavigator<RootStackParamList>(); 
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <StatusBar barStyle="dark-content" />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="SignUp">
+          <Stack.Screen name="SignUp" component={SignUp}/>
+          <Stack.Screen name="UsernameForm" component={UsernameForm} />
+          <Stack.Screen name="HomePage" component={HomePage} />
+          <Stack.Screen name="ChatWindow" component={ChatWindow} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
