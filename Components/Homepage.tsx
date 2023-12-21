@@ -1,15 +1,19 @@
-// HomePage.tsx
 import React from 'react';
-import { Text, View , StyleSheet } from 'react-native';
+import { Text, View , StyleSheet, TouchableOpacity } from 'react-native';
 import { auth } from '../firebase';
 import ChatList from './AllChatsList';
+import useUnsubscribeNotification from '../Hooks/useUnsubscribeNotification';
 
 const Homepage: React.FC = () => {
+    const unsubscribe = useUnsubscribeNotification();
+
     return (
         <View style={styles.container}>
             <Text style={styles.welcomeText}>Welcome, {auth.currentUser?.email}</Text>
-            <Text style={styles.idText}>Your ID is {auth.currentUser?.uid}</Text>
             <ChatList />
+            <TouchableOpacity onPress={unsubscribe}>
+                <Text>Disable notifications for the user in this device</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -17,7 +21,7 @@ const Homepage: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
+        padding: 10,
         backgroundColor: '#f5f5f5',
     },
     welcomeText: {

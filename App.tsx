@@ -6,6 +6,8 @@ import SignUp from './Components/Authentication/SignUp';
 import HomePage from './Components/Homepage';
 import UsernameForm from './Components/Authentication/UsernameForm';
 import ChatWindow from './Components/ChatWindow';
+import registerNNPushToken from 'native-notify';
+import { pushConfig } from './pushconfig';
 
 export type RootStackParamList = {
   SignUp: undefined;
@@ -14,9 +16,17 @@ export type RootStackParamList = {
   ChatWindow: { chatId: string };
 };
 
+export type user = {
+  username: string;
+  id: string;
+  email: string;
+};
+
 const Stack = createStackNavigator<RootStackParamList>(); 
 
 export default function App() {
+  registerNNPushToken(pushConfig.APP_ID, pushConfig.APP_TOKEN);
+
   return (
     <>
       <StatusBar barStyle="dark-content" />

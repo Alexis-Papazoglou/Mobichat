@@ -5,10 +5,12 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "fire
 import { collection, doc , setDoc} from "firebase/firestore";
 import { firestore } from '../../firebase';
 import { useNavigation } from '@react-navigation/native';
+import { registerIndieID } from 'native-notify';
+import { pushConfig } from '../../pushconfig';
 
 const Login: React.FC= () => {
     const navigation = useNavigation<any>();
-    const [email, setEmail] = useState<string>('test@gmail.com');
+    const [email, setEmail] = useState<string>('admin@gmail.com');
     const [password, setPassword] = useState<string>('testtest');
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -16,6 +18,10 @@ const Login: React.FC= () => {
         setLoading(true);
         try {
             await signInWithEmailAndPassword(auth, email, password);
+
+            // Register the user's device to push notification service
+            registerIndieID(auth.currentUser?.uid, pushConfig.APP_ID, pushConfig.APP_TOKEN);
+
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'HomePage' }],
@@ -37,6 +43,10 @@ const Login: React.FC= () => {
                     email: user.email,
                 });
                 console.log("Document written with ID: ", user.uid);
+                
+                // Register the user's device to push notification service
+                registerIndieID(user.uid, pushConfig.APP_ID, pushConfig.APP_TOKEN);
+                
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'UsernameForm' }],

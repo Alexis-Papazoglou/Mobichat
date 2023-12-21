@@ -5,6 +5,10 @@ import { firestore } from '../firebase';
 import { auth } from '../firebase';
 import { useNavigation } from '@react-navigation/native';
 
+//types
+import { user } from '../App';
+import CreateChat from './CreateChat';
+
 type chats = {
     id: string;
     userIds: string[];
@@ -46,6 +50,7 @@ const AllChatsList: React.FC = () => {
                     <Text style={styles.chatText}>{chat.username}</Text>
                 </TouchableOpacity>
             ))}
+            <CreateChat />
         </View>
     );
 };
@@ -54,7 +59,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        backgroundColor: 'black',
+        backgroundColor: 'f5f5f5',
     },
     chatItem: {
         padding: 16,
