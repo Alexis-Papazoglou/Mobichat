@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button, TextInput, View, Modal, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { auth, firestore } from '../firebase';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
-import { MaterialIcons } from '@expo/vector-icons'; // Make sure to install @expo/vector-icons
+import { AntDesign } from '@expo/vector-icons'; 
 
 const CreateChat: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -57,7 +57,7 @@ const CreateChat: React.FC = () => {
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => setModalVisible(true)}>
-                <MaterialIcons name="add" size={24} color="black" />
+                <AntDesign name="message1" size={30} color="blue" />
             </TouchableOpacity>
 
             <Modal
@@ -74,8 +74,12 @@ const CreateChat: React.FC = () => {
                         style={styles.input}
                         placeholderTextColor={'grey'}
                     />
-                    <Button title="Create Chat" onPress={createChat} />
-                    <Button title="Cancel" onPress={() => setModalVisible(false)} />
+                    <TouchableOpacity style={styles.btn} onPress={createChat}>
+                        <Text>Create Chat</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.btn} onPress={() => setModalVisible(false)}>
+                        <Text>Cancel</Text>
+                    </TouchableOpacity>
                 </View>
             </Modal>
 
@@ -87,17 +91,20 @@ const CreateChat: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         position: 'absolute',
-        bottom: 20,
-        right: 20,
-        backgroundColor: 'red',
-        padding: 7,
+        bottom: 5,
+        right: 5,
+        backgroundColor: '#f5f5f5',
+        padding: 10,
         borderRadius: 50,
+        borderColor: 'blue',
+        borderWidth: 1,
     },
     modalView: {
         margin: 20,
+        marginTop: 100,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        padding: 20,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -110,10 +117,17 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        borderColor: 'gray',
+        borderColor: 'lightgrey',
         padding: 10,
         width: 200,
         marginBottom: 10,
+        borderRadius: 5,
+    },
+    btn: {
+        padding: 8,
+        backgroundColor: 'lightgrey',
+        margin: 5,
+        borderRadius: 5,
     },
 });
 

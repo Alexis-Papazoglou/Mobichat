@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { collection, query, onSnapshot, where, getDoc, doc as docRef } from 'firebase/firestore';
 import { firestore } from '../firebase';
 import { auth } from '../firebase';
@@ -41,15 +41,18 @@ const AllChatsList: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            {chats.map((chat) => (
-                <TouchableOpacity style={styles.chatItem} key={chat.id} onPress={() => {
-                    navigation.navigate('ChatWindow', {
-                        chatId: chat.id,
-                    });
-                }}>
-                    <Text style={styles.chatText}>{chat.username}</Text>
-                </TouchableOpacity>
-            ))}
+            <ScrollView showsVerticalScrollIndicator={false}>
+                {chats.map((chat) => (
+                    <TouchableOpacity style={styles.chatItem} key={chat.id} onPress={() => {
+                        navigation.navigate('ChatWindow', {
+                            chatId: chat.id,
+                            otherUsername: chat.username, // Pass the other user's username
+                        });
+                    }}>
+                        <Text style={styles.chatText}>{chat.username}</Text>
+                    </TouchableOpacity>
+                ))}
+            </ScrollView>
             <CreateChat />
         </View>
     );
@@ -58,8 +61,8 @@ const AllChatsList: React.FC = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
-        backgroundColor: 'f5f5f5',
+        padding: 8,
+        backgroundColor: '#f5f5f5',
     },
     chatItem: {
         padding: 16,

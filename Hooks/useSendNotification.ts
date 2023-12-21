@@ -24,6 +24,14 @@ const useSendNotification = () => {
             const username = userSnap.data().username;
             console.log('Sending notification to:', otherUserId)
 
+            // Check if the user is subscribed to notifications
+            const response = await axios.get(`https://app.nativenotify.com/api/expo/indie/sub/${pushConfig.APP_ID}/${pushConfig.APP_TOKEN}/${otherUserId}`);
+            console.log('Response:', response.data);
+            if (!response.data || response.data.length === 0) {
+                console.log('User is not subscribed to notifications');
+                return;
+            }
+
             await axios.post(`https://app.nativenotify.com/api/indie/notification`, {
                 subID: otherUserId,
                 appId: pushConfig.APP_ID,

@@ -1,3 +1,4 @@
+// App.tsx
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,7 +14,7 @@ export type RootStackParamList = {
   SignUp: undefined;
   UsernameForm: undefined;
   HomePage: undefined;
-  ChatWindow: { chatId: string };
+  ChatWindow: { chatId: string; otherUsername: string }; // Add otherUsername to the params
 };
 
 export type user = {
@@ -35,7 +36,11 @@ export default function App() {
           <Stack.Screen name="SignUp" component={SignUp}/>
           <Stack.Screen name="UsernameForm" component={UsernameForm} />
           <Stack.Screen name="HomePage" component={HomePage} />
-          <Stack.Screen name="ChatWindow" component={ChatWindow} />
+          <Stack.Screen 
+            name="ChatWindow" 
+            component={ChatWindow} 
+            options={({ route }) => ({ title: route.params.otherUsername })} // Set the title to the other user's username
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>
