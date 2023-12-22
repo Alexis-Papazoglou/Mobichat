@@ -18,7 +18,7 @@ const UsernameForm: React.FC = () => {
             });
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'HomePage' }],
+                routes: [{ name: 'Home' }],
             });
         } catch (error) {
             console.error(error);

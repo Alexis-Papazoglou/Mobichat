@@ -1,9 +1,9 @@
 // CreateChat.tsx
 import React, { useState } from 'react';
-import { Button, TextInput, View, Modal, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { TextInput, View, Modal, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { auth, firestore } from '../firebase';
 import { collection, addDoc, query, where, getDocs } from 'firebase/firestore';
-import { AntDesign } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons';
 
 const CreateChat: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -15,40 +15,40 @@ const CreateChat: React.FC = () => {
         const usersRef = collection(firestore, 'users');
         const q = query(usersRef, where('username', '==', username));
         const querySnapshot = await getDocs(q);
-    
+
         if (querySnapshot.empty) {
             alert('No such user!');
             return;
         }
-    
+
         // Get the ID of the other user
         const otherUserId = querySnapshot.docs[0].id;
-    
+
         // Check if a chat already exists between the current user and the other user
         const chatsRef = collection(firestore, 'chats');
         const chatQuery = query(chatsRef, where('userIds', 'array-contains', auth.currentUser?.uid));
         const chatQuerySnapshot = await getDocs(chatQuery);
-    
+
         const existingChat = chatQuerySnapshot.docs.find(doc => {
             const chatData = doc.data();
             return chatData.userIds.includes(otherUserId);
         });
-    
+
         if (existingChat) {
             alert('You already have a chat with this user!');
             return;
         }
-    
+
         // Create a new chat document
         await addDoc(chatsRef, {
             userIds: [auth.currentUser?.uid, otherUserId],
             messages: []
         });
-    
+
         // Show a success message
         setMessage('New chat created!');
         setTimeout(() => setMessage(''), 2000); // Hide the message after 2 seconds
-    
+
         // Close the modal and clear the username
         setModalVisible(false);
         setUsername('');
@@ -74,7 +74,7 @@ const CreateChat: React.FC = () => {
                         style={styles.input}
                         placeholderTextColor={'grey'}
                     />
-                    <TouchableOpacity style={styles.btn} onPress={createChat}>
+                    <TouchableOpacity style={[styles.btn,{backgroundColor:'lightblue'}]} onPress={createChat}>
                         <Text>Create Chat</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.btn} onPress={() => setModalVisible(false)}>
@@ -82,7 +82,6 @@ const CreateChat: React.FC = () => {
                     </TouchableOpacity>
                 </View>
             </Modal>
-
             {message && <Text>{message}</Text>}
         </View>
     );
@@ -109,11 +108,11 @@ const styles = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 8,
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
+        shadowOpacity: 0.8,
+        shadowRadius: 30,
+        elevation: 30,
     },
     input: {
         borderWidth: 1,

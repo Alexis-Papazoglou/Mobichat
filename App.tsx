@@ -1,4 +1,3 @@
-// App.tsx
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,7 +12,7 @@ import { pushConfig } from './pushconfig';
 export type RootStackParamList = {
   SignUp: undefined;
   UsernameForm: undefined;
-  HomePage: undefined;
+  Home: undefined;
   ChatWindow: { chatId: string; otherUsername: string }; // Add otherUsername to the params
 };
 
@@ -21,6 +20,7 @@ export type user = {
   username: string;
   id: string;
   email: string;
+  profilePicture: string;
 };
 
 const Stack = createStackNavigator<RootStackParamList>(); 
@@ -35,7 +35,7 @@ export default function App() {
         <Stack.Navigator initialRouteName="SignUp">
           <Stack.Screen name="SignUp" component={SignUp}/>
           <Stack.Screen name="UsernameForm" component={UsernameForm} />
-          <Stack.Screen name="HomePage" component={HomePage} />
+          <Stack.Screen name="Home" component={HomePage} />
           <Stack.Screen 
             name="ChatWindow" 
             component={ChatWindow} 

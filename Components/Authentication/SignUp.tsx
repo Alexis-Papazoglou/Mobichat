@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Button, TextInput, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, TextInput, View, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { auth } from '../../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { collection, doc , setDoc} from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { firestore } from '../../firebase';
 import { useNavigation } from '@react-navigation/native';
 import { registerIndieID } from 'native-notify';
 import { pushConfig } from '../../pushconfig';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const Login: React.FC= () => {
+const Login: React.FC = () => {
     const navigation = useNavigation<any>();
-    const [email, setEmail] = useState<string>('admin@gmail.com');
+    const [email, setEmail] = useState<string>('test@gmail.com');
     const [password, setPassword] = useState<string>('testtest');
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -24,7 +25,7 @@ const Login: React.FC= () => {
 
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'HomePage' }],
+                routes: [{ name: 'Home' }],
             });
         } catch (error) {
             alert(error);
@@ -43,10 +44,10 @@ const Login: React.FC= () => {
                     email: user.email,
                 });
                 console.log("Document written with ID: ", user.uid);
-                
+
                 // Register the user's device to push notification service
                 registerIndieID(user.uid, pushConfig.APP_ID, pushConfig.APP_TOKEN);
-                
+
                 navigation.reset({
                     index: 0,
                     routes: [{ name: 'UsernameForm' }],
@@ -59,13 +60,19 @@ const Login: React.FC= () => {
     };
 
     return (
-        <View style={styles.container}>
+        <KeyboardAwareScrollView contentContainerStyle={styles.container} extraScrollHeight={100}>
             <TextInput style={styles.input} placeholder="Email" onChangeText={text => setEmail(text)} value={email} />
             <TextInput style={styles.input} placeholder="Password" onChangeText={text => setPassword(text)} value={password} secureTextEntry />
-            <Button title="Login" onPress={handleLogin} disabled={loading} />
-            <Button title="Create Account" onPress={handleCreateAccount} disabled={loading} />
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={[styles.btn, {backgroundColor: 'lightblue'}]} onPress={handleLogin} disabled={loading}>
+                    <Text>Log In</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.btn} onPress={handleCreateAccount} disabled={loading}>
+                    <Text>Create Account</Text>
+                </TouchableOpacity>
+            </View>
             {loading && <ActivityIndicator />}
-        </View>
+        </KeyboardAwareScrollView>
     );
 }
 
@@ -77,10 +84,25 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 40,
-        borderColor: 'gray',
+        borderColor: 'grey',
         borderWidth: 1,
         marginBottom: 10,
         paddingLeft: 8,
+        borderRadius: 10,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+    btn: {
+        backgroundColor: '#DDDDDD',
+        padding: 10,
+        width: 150,
+        alignItems: 'center',
+        marginBottom: 10,
+        borderRadius: 10,
     },
 });
 

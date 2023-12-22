@@ -9,9 +9,11 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
     "axios": "^1.6.2",
+    "date-fns": "^3.0.6",
     "expo": "~49.0.15",
     "expo-device": "~5.4.0",
     "expo-notifications": "~0.20.1",
